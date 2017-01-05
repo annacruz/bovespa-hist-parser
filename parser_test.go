@@ -1,39 +1,47 @@
 package main
 
 import (
-	"github.com/stretchr/testify/assert"
-	"testing"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
-var parser Parser
+var _ = Describe("Parser", func() {
+	Describe("Parsing line", func() {
+		var (
+			parser   Parser
+			cotation *Cotation
+			err      error
+			line     string
+		)
 
-func do_parse_or_fatal(t *testing.T, line string) *Cotation {
-	cotation, err := parser.Do(line)
-	if err != nil {
-		t.Errorf("Error in parse")
-	}
-	return cotation
-}
-
-func Test_parse_return_stock_code(t *testing.T) {
-	line := "012016110102AALR3       010ALLIAR      ON      NM   R$  000000000180600000000018380000000001716000000000177400000000017900000000001765000000000179002072000000000000996200000000001767698100000000000000009999123100000010000000000000BRAALRACNOR6100"
-
-	cotation := do_parse_or_fatal(t, line)
-
-	assert.Equal(t, "AALR3", cotation.stock_code, "it should be equal")
-}
-
-func Test_parse_return_trading_day(t *testing.T) {
-	line := "012016110102AALR3       010ALLIAR      ON      NM   R$  000000000180600000000018380000000001716000000000177400000000017900000000001765000000000179002072000000000000996200000000001767698100000000000000009999123100000010000000000000BRAALRACNOR6100"
-
-	cotation := do_parse_or_fatal(t, line)
-
-	assert.Equal(t, "20161101", cotation.trading_day, "it should be equal")
-}
-func Test_parse_return_price_on_trade_start(t *testing.T) {
-	line := "012016110102AALR3       010ALLIAR      ON      NM   R$  000000000180600000000018380000000001716000000000177400000000017900000000001765000000000179002072000000000000996200000000001767698100000000000000009999123100000010000000000000BRAALRACNOR6100"
-
-	cotation := do_parse_or_fatal(t, line)
-
-	assert.Equal(t, "180,60", cotation.price_on_start, "it should be equal")
-}
+		BeforeEach(func() {
+			line = "012016110102AALR3       010ALLIAR      ON      NM   R$  000000000180600000000018380000000001716000000000177400000000017900000000001765000000000179002072000000000000996200000000001767698100000000000000009999123100000010000000000000BRAALRACNOR6100"
+			cotation, err = parser.Do(line)
+		})
+		Context("valid line", func() {
+			It("retrieve cotation stock code", func() {
+				Expect(cotation.stock_code).To(Equal("AALR3"))
+			})
+			It("retrieve cotation trading day", func() {
+				Expect(cotation.trading_day).To(Equal("20161101"))
+			})
+			It("retieves cotation price on start", func() {
+				Expect(cotation.price_on_start).To(Equal("180,60"))
+			})
+		})
+	})
+	Describe("Intervals", func() {
+		var (
+			parser *Parser
+		)
+		BeforeEach(func() {
+			parser = NewParser()
+		})
+		It("has trading day interval start", func() {
+			Expect(parser.trading_day_interval.start).To(Equal(3))
+		})
+		It("has trading day interval stop", func() {
+			Expect(parser.trading_day_interval.stop).To(Equal(7))
+		})
+	})
+})

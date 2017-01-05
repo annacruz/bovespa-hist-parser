@@ -1,6 +1,13 @@
 package main
 
-type Parser struct{}
+type Parser struct {
+	trading_day_interval Interval
+}
+
+type Interval struct {
+	start int
+	stop  int
+}
 
 type Cotation struct {
 	stock_code     string
@@ -17,4 +24,16 @@ func (p *Parser) Do(line string) (*Cotation, error) {
 	return cotation, nil
 }
 
-func main() {}
+func NewParser() *Parser {
+	var parser = &Parser{
+		trading_day_interval: Interval{
+			start: 3,
+			stop:  7,
+		},
+	}
+	return parser
+
+}
+
+func main() {
+}
