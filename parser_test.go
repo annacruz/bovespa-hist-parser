@@ -19,13 +19,13 @@ var _ = Describe("Parser", func() {
 			cotation, err = parser.Do(line)
 		})
 		Context("valid line", func() {
-			It("retrieve cotation stock code", func() {
+			It("retrieve cotation stock code throught interval", func() {
 				Expect(cotation.stock_code).To(Equal("AALR3"))
 			})
-			It("retrieve cotation trading day", func() {
+			It("retrieve cotation trading day throught interval", func() {
 				Expect(cotation.trading_day).To(Equal("20161101"))
 			})
-			It("retieves cotation price on start", func() {
+			It("retieves cotation price on start throught interval", func() {
 				Expect(cotation.price_on_start).To(Equal("180,60"))
 			})
 		})
@@ -38,10 +38,34 @@ var _ = Describe("Parser", func() {
 			parser = NewParser()
 		})
 		It("has trading day interval start", func() {
-			Expect(parser.trading_day_interval.start).To(Equal(3))
+			Expect(parser.trading_day_interval.start).To(Equal(2))
 		})
 		It("has trading day interval stop", func() {
-			Expect(parser.trading_day_interval.stop).To(Equal(7))
+			Expect(parser.trading_day_interval.stop).To(Equal(10))
+		})
+		It("has stock code interval start and stop", func() {
+			Expect(parser.stock_code_interval.start).To(Equal(12))
+			Expect(parser.stock_code_interval.stop).To(Equal(24))
+		})
+		It("has price on start of trading day interval start and stop", func() {
+			Expect(parser.price_start_trading_day_interval.start).To(Equal(56))
+			Expect(parser.price_start_trading_day_interval.stop).To(Equal(69))
+		})
+		It("has maximum price interval start and stop", func() {
+			Expect(parser.max_price_interval.start).To(Equal(69))
+			Expect(parser.max_price_interval.stop).To(Equal(82))
+		})
+		It("has minimum price interval start and stop", func() {
+			Expect(parser.min_price_interval.start).To(Equal(82))
+			Expect(parser.min_price_interval.stop).To(Equal(95))
+		})
+		It("has average price interval start and stop", func() {
+			Expect(parser.average_price_interval.start).To(Equal(95))
+			Expect(parser.average_price_interval.stop).To(Equal(108))
+		})
+		It("has last price interval start and stop", func() {
+			Expect(parser.last_price_interval.start).To(Equal(108))
+			Expect(parser.last_price_interval.stop).To(Equal(121))
 		})
 	})
 })
