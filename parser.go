@@ -1,5 +1,11 @@
 package main
 
+import (
+	//	"fmt"
+	//	"github.com/ericlagergren/decimal"
+	. "strings"
+)
+
 type Parser struct {
 	trading_day_interval             Interval
 	stock_code_interval              Interval
@@ -16,18 +22,22 @@ type Interval struct {
 }
 
 type Cotation struct {
-	stock_code     string
-	trading_day    string
-	price_on_start string
+	stock_code     string `json:"stock_code`
+	trading_day    string `json:"trading_day`
+	price_on_start string `json:"price_on_start`
 }
 
-func (p *Parser) Do(line string) (*Cotation, error) {
+func (parser *Parser) Do(line string) (*Cotation, error) {
 	cotation := &Cotation{
-		stock_code:     "AALR3",
-		trading_day:    "20161101",
-		price_on_start: "180,60",
+		stock_code:  TrimSpace(line[parser.stock_code_interval.start:parser.stock_code_interval.stop]),
+		trading_day: TrimSpace(line[parser.trading_day_interval.start:parser.trading_day_interval.stop]),
+		//		price_on_start: decimal.New(TrimLeft(line[parser.price_start_trading_day_interval.start:parser.price_start_trading_day_interval.stop], "0"), 2),
 	}
 	return cotation, nil
+}
+
+func ConvertNumber(number string) string {
+	return ""
 }
 
 func NewParser() *Parser {
@@ -64,6 +74,5 @@ func NewParser() *Parser {
 	return parser
 
 }
-
 func main() {
 }

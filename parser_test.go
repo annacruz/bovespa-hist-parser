@@ -8,7 +8,7 @@ import (
 var _ = Describe("Parser", func() {
 	Describe("Parsing line", func() {
 		var (
-			parser   Parser
+			parser   *Parser
 			cotation *Cotation
 			err      error
 			line     string
@@ -16,6 +16,7 @@ var _ = Describe("Parser", func() {
 
 		BeforeEach(func() {
 			line = "012016110102AALR3       010ALLIAR      ON      NM   R$  000000000180600000000018380000000001716000000000177400000000017900000000001765000000000179002072000000000000996200000000001767698100000000000000009999123100000010000000000000BRAALRACNOR6100"
+			parser = NewParser()
 			cotation, err = parser.Do(line)
 		})
 		Context("valid line", func() {
@@ -27,6 +28,13 @@ var _ = Describe("Parser", func() {
 			})
 			It("retieves cotation price on start throught interval", func() {
 				Expect(cotation.price_on_start).To(Equal("180,60"))
+			})
+		})
+	})
+	Describe("Converte decimal numbers", func() {
+		Context("valid number", func() {
+			It("get number in plain text and convert it to an decimal with precision two", func() {
+				Expect(ConvertNumber("00000000018060")).To(Equal("180,60"))
 			})
 		})
 	})
