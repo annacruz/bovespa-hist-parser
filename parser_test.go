@@ -21,20 +21,20 @@ var _ = Describe("Parser", func() {
 		})
 		Context("valid line", func() {
 			It("retrieve cotation stock code throught interval", func() {
-				Expect(cotation.stock_code).To(Equal("AALR3"))
+				Expect(cotation.ticker).To(Equal("AALR3"))
 			})
 			It("retrieve cotation trading day throught interval", func() {
 				Expect(cotation.trading_day).To(Equal("20161101"))
 			})
 			It("retieves cotation price on start throught interval", func() {
-				Expect(cotation.price_on_start).To(Equal("180,60"))
+				Expect(cotation.price_on_start).To(Equal("18.06"))
 			})
 		})
 	})
 	Describe("Converte decimal numbers", func() {
 		Context("valid number", func() {
 			It("get number in plain text and convert it to an decimal with precision two", func() {
-				Expect(ConvertNumber("00000000018060")).To(Equal("180,60"))
+				Expect(ConvertNumber("0000000001806")).To(Equal("18.06"))
 			})
 		})
 	})
@@ -52,8 +52,8 @@ var _ = Describe("Parser", func() {
 			Expect(parser.trading_day_interval.stop).To(Equal(10))
 		})
 		It("has stock code interval start and stop", func() {
-			Expect(parser.stock_code_interval.start).To(Equal(12))
-			Expect(parser.stock_code_interval.stop).To(Equal(24))
+			Expect(parser.ticker_interval.start).To(Equal(12))
+			Expect(parser.ticker_interval.stop).To(Equal(24))
 		})
 		It("has price on start of trading day interval start and stop", func() {
 			Expect(parser.price_start_trading_day_interval.start).To(Equal(56))

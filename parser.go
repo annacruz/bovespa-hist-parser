@@ -1,14 +1,14 @@
 package main
 
 import (
-	//	"fmt"
-	//	"github.com/ericlagergren/decimal"
-	. "strings"
+	"github.com/ericlagergren/decimal"
+	"strconv"
+	"strings"
 )
 
 type Parser struct {
 	trading_day_interval             Interval
-	stock_code_interval              Interval
+	ticker_interval                  Interval
 	price_start_trading_day_interval Interval
 	max_price_interval               Interval
 	min_price_interval               Interval
@@ -22,22 +22,24 @@ type Interval struct {
 }
 
 type Cotation struct {
-	stock_code     string `json:"stock_code`
+	ticker         string `json:"ticker`
 	trading_day    string `json:"trading_day`
 	price_on_start string `json:"price_on_start`
 }
 
 func (parser *Parser) Do(line string) (*Cotation, error) {
 	cotation := &Cotation{
-		stock_code:  TrimSpace(line[parser.stock_code_interval.start:parser.stock_code_interval.stop]),
-		trading_day: TrimSpace(line[parser.trading_day_interval.start:parser.trading_day_interval.stop]),
-		//		price_on_start: decimal.New(TrimLeft(line[parser.price_start_trading_day_interval.start:parser.price_start_trading_day_interval.stop], "0"), 2),
+		ticker:         strings.TrimSpace(line[parser.ticker_interval.start:parser.ticker_interval.stop]),
+		trading_day:    strings.TrimSpace(line[parser.trading_day_interval.start:parser.trading_day_interval.stop]),
+		price_on_start: ConvertNumber(line[parser.price_start_trading_day_interval.start:parser.price_start_trading_day_interval.stop]),
 	}
 	return cotation, nil
 }
 
 func ConvertNumber(number string) string {
-	return ""
+	unformatted_number, _ := strconv.Atoi(strings.TrimLeft(number, "0"))
+	formatted_number := decimal.New(int64(unformatted_number), 2)
+	return formatted_number.String()
 }
 
 func NewParser() *Parser {
@@ -46,7 +48,7 @@ func NewParser() *Parser {
 			start: 2,
 			stop:  10,
 		},
-		stock_code_interval: Interval{
+		ticker_interval: Interval{
 			start: 12,
 			stop:  24,
 		},
