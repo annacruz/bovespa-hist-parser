@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/ericlagergren/decimal"
 	"strconv"
 	"strings"
 )
@@ -37,9 +36,8 @@ func (parser *Parser) Do(line string) (*Cotation, error) {
 }
 
 func ConvertNumber(number string) string {
-	unformatted_number, _ := strconv.Atoi(strings.TrimLeft(number, "0"))
-	formatted_number := decimal.New(int64(unformatted_number), 2)
-	return formatted_number.String()
+	unformatted_number, _ := strconv.ParseFloat(number, 64)
+	return strconv.FormatFloat(unformatted_number/100.0, 'f', 2, 64)
 }
 
 func NewParser() *Parser {
