@@ -20,22 +20,22 @@ type Interval struct {
 	stop  int
 }
 
-type Cotation struct {
+type Stock struct {
 	ticker         string `json:"ticker`
 	trading_day    string `json:"trading_day`
 	price_on_start string `json:"price_on_start`
 }
 
-func (parser *Parser) Do(line string) (*Cotation, error) {
-	cotation := &Cotation{
+func (parser *Parser) Do(line string) (*Stock, error) {
+	stock := &Stock{
 		ticker:         strings.TrimSpace(line[parser.ticker_interval.start:parser.ticker_interval.stop]),
 		trading_day:    strings.TrimSpace(line[parser.trading_day_interval.start:parser.trading_day_interval.stop]),
-		price_on_start: ConvertNumber(line[parser.price_start_trading_day_interval.start:parser.price_start_trading_day_interval.stop]),
+		price_on_start: ToDecimalFormat(line[parser.price_start_trading_day_interval.start:parser.price_start_trading_day_interval.stop]),
 	}
-	return cotation, nil
+	return stock, nil
 }
 
-func ConvertNumber(number string) string {
+func ToDecimalFormat(number string) string {
 	unformatted_number, _ := strconv.ParseFloat(number, 64)
 	return strconv.FormatFloat(unformatted_number/100.0, 'f', 2, 64)
 }

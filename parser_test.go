@@ -8,33 +8,33 @@ import (
 var _ = Describe("Parser", func() {
 	Describe("Parsing line", func() {
 		var (
-			parser   *Parser
-			cotation *Cotation
-			err      error
-			line     string
+			parser *Parser
+			stock  *Stock
+			err    error
+			line   string
 		)
 
 		BeforeEach(func() {
 			line = "012016110102AALR3       010ALLIAR      ON      NM   R$  000000000180600000000018380000000001716000000000177400000000017900000000001765000000000179002072000000000000996200000000001767698100000000000000009999123100000010000000000000BRAALRACNOR6100"
 			parser = NewParser()
-			cotation, err = parser.Do(line)
+			stock, err = parser.Do(line)
 		})
 		Context("valid line", func() {
-			It("retrieve cotation stock code throught interval", func() {
-				Expect(cotation.ticker).To(Equal("AALR3"))
+			It("retrieve stock ticker throught interval", func() {
+				Expect(stock.ticker).To(Equal("AALR3"))
 			})
-			It("retrieve cotation trading day throught interval", func() {
-				Expect(cotation.trading_day).To(Equal("20161101"))
+			It("retrieve stock trading day throught interval", func() {
+				Expect(stock.trading_day).To(Equal("20161101"))
 			})
-			It("retieves cotation price on start throught interval", func() {
-				Expect(cotation.price_on_start).To(Equal("18.06"))
+			It("retieves stock price on start throught interval", func() {
+				Expect(stock.price_on_start).To(Equal("18.06"))
 			})
 		})
 	})
 	Describe("Converte decimal numbers", func() {
 		Context("valid number", func() {
 			It("get number in plain text and convert it to an decimal with precision two", func() {
-				Expect(ConvertNumber("0000000001806")).To(Equal("18.06"))
+				Expect(ToDecimalFormat("0000000001806")).To(Equal("18.06"))
 			})
 		})
 	})
